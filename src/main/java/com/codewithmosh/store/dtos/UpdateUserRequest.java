@@ -1,4 +1,9 @@
 package com.codewithmosh.store.dtos;
 
-public class UbdateUserRequest {
+import lombok.Data;
+
+@Data
+public class UpdateUserRequest {
+    private String name;
+    private String email;
 }

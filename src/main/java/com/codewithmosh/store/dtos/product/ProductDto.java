@@ -1,4 +1,4 @@
-package com.codewithmosh.store.dtos;
+package com.codewithmosh.store.dtos.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,5 @@ public class ProductDto {
     private String name;
     private String description;
     private BigDecimal price;
-    private Long categoryId;
+    private Byte categoryId;
 }

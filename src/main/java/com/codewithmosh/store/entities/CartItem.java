@@ -3,6 +3,8 @@ package com.codewithmosh.store.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Builder
@@ -10,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "cart_items")
-public class CartItems {
+public class CartItem {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +28,8 @@ public class CartItems {
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    public BigDecimal calcTotalPrice(){
+        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
+    }
 }
