@@ -3,6 +3,7 @@ package com.codewithmosh.store.Controllers;
 import com.codewithmosh.store.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -61,6 +62,12 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error" , ex.getMessage() ));
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String , String>> handleBadCredentialsException(BadCredentialsException ex){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error" , "The password or email isn't correct" ));
+    }
 }
 
 

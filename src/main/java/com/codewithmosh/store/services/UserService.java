@@ -83,7 +83,7 @@ public class UserService implements UserDetailsService {
 
         userRepository.delete(user);
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
          var user =userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException(userNotFoundMessage));
