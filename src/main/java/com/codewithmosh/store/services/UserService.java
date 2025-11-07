@@ -42,7 +42,11 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException(userNotFoundMessage));
         return userMapper.toDto(user);
     }
-
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(userNotFoundMessage));
+        return userMapper.toDto(user);
+    }
     public UserDto registerUser(RegisterUserRequest registerUserRequest) {
         if (userRepository.existsByEmail(registerUserRequest.getEmail())) {
             throw new EmailAlreadyRegisteredException("Email is already registered");

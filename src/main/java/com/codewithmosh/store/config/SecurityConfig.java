@@ -1,5 +1,6 @@
 package com.codewithmosh.store.config;
 
+import com.codewithmosh.store.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +17,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -44,10 +46,12 @@ public class SecurityConfig {
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c->
-                      c.requestMatchers(HttpMethod.POST , "/users/").permitAll()
-                              .requestMatchers("/auth/login").permitAll()
-                              .anyRequest().authenticated()
-                        );
+                        c.requestMatchers(HttpMethod.POST , "/users/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                                // .requestMatchers(HttpMethod.POST ,"/auth/validate").permitAll() <-- امسح السطر ده
+                                .anyRequest().authenticated() // <-- خليه يقع تحت القاعدة دي
+                )
+                .addFilterBefore(jwtAuthenticationFilter , UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
