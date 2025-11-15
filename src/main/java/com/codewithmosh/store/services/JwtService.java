@@ -1,25 +1,42 @@
 package com.codewithmosh.store.services;
 
+import com.codewithmosh.store.config.JwtConfig;
+import com.codewithmosh.store.entities.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import static java.util.BitSet.valueOf;
+@AllArgsConstructor
 @Service
 public class JwtService {
-    @Value("${jwt.secret}")
-    private String secret;
-    public String generateTokens(String email){
-      return   Jwts.builder()
-                .setSubject(email).setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 86400))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+    private final JwtConfig jwtConfig;
+
+    public String generateAccessTokens(User user){
+      return generateToken(user, jwtConfig.getAccessTokenExpiration());
+    }
+
+    public String generateRefreshTokens(User user){
+        return generateToken(user, jwtConfig.getRefreshTokenExpiration());
+    }
+
+    private String generateToken(User user, long tokenExpiration) {
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .claim("email", user.getEmail())
+                .claim("name", user.getName())
+                .claim("role" , user.getRole())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
+                .signWith(jwtConfig.getSecretKey())
                 .compact();
     }
+
     public boolean validateToken (String token) {
         try {
             var claim = getClaim(token);
@@ -32,14 +49,14 @@ public class JwtService {
 
     private Claims getClaim(String token) {
         return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .verifyWith(jwtConfig.getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    public String getEmailFroToken(String token){
-        var claim = getClaim(token);
-        return claim.getSubject();
+    public Long getUserIdFromToken(String token){
+
+        return Long.valueOf(getClaim(token).getSubject());
     }
 }

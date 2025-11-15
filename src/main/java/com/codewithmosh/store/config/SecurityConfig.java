@@ -1,5 +1,6 @@
 package com.codewithmosh.store.config;
 
+import com.codewithmosh.store.entities.Role;
 import com.codewithmosh.store.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +47,12 @@ public class SecurityConfig {
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c->
-                        c.requestMatchers(HttpMethod.POST , "/users/**").permitAll()
+                        c
+                                .requestMatchers(HttpMethod.POST , "/users/**").permitAll()
+                                .requestMatchers(HttpMethod.POST , "/admin/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.GET , "/auth/me").permitAll()
+                                .requestMatchers(HttpMethod.POST , "/auth/refresh").permitAll()
                                 // .requestMatchers(HttpMethod.POST ,"/auth/validate").permitAll() <-- امسح السطر ده
                                 .anyRequest().authenticated() // <-- خليه يقع تحت القاعدة دي
                 )

@@ -4,6 +4,7 @@ import com.codewithmosh.store.dtos.ChangePasswordDto;
 import com.codewithmosh.store.dtos.RegisterUserRequest;
 import com.codewithmosh.store.dtos.UpdateUserRequest;
 import com.codewithmosh.store.dtos.UserDto;
+import com.codewithmosh.store.entities.Role;
 import com.codewithmosh.store.entities.User;
 import com.codewithmosh.store.exceptions.EmailAlreadyRegisteredException;
 import com.codewithmosh.store.exceptions.InvalidPasswordException;
@@ -54,6 +55,7 @@ public class UserService implements UserDetailsService {
 
         User user = userMapper.registerRequestToEntity(registerUserRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.USER);
         userRepository.save(user);
 
         return userMapper.toDto(user);
