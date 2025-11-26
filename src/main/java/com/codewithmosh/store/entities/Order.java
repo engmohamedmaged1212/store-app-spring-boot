@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,6 +35,9 @@ public class Order {
     @Column(name = "created_at" , insertable = false , updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "order")
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
+
+    @OneToMany(mappedBy = "order" , cascade = CascadeType.PERSIST)
     private Set<OrderItem> items  = new LinkedHashSet<>();
 }

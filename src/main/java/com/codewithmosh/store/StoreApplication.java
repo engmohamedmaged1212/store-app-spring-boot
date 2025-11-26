@@ -13,15 +13,4 @@ public class  StoreApplication {
         SpringApplication.run(StoreApplication.class, args);
     }
 
-//    public int[] twoSum(int[] nums, int target) {
-//        HashMap<Integer , Integer> nums1 = new HashMap<>();
-//        for(int i = 0 ; i < nums.length ; i++){
-//            if(nums1.containsKey(target - nums[i])){
-//                return new int[] {nums1.get(target-nums[i]) , i};
-//            }
-//            nums1.put(nums[i] , i);
-//        }
-//        throw new IllegalArgumentException("No solution found");
-//
-//    }
 }

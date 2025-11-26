@@ -2,7 +2,6 @@ CREATE TABLE carts
 (
 	id binary(16) default (UUID_to_bin(UUID())) not null primary key,
     date_created date default (curdate()) not null
-
 );
 create table cart_items
 (

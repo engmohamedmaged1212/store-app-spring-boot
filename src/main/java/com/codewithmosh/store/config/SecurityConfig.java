@@ -57,7 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.GET , "/auth/me").permitAll()
                                 .requestMatchers(HttpMethod.POST , "/auth/refresh").permitAll()
-                                // .requestMatchers(HttpMethod.POST ,"/auth/validate").permitAll() <-- امسح السطر ده
+                                .requestMatchers("/products/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated() // <-- خليه يقع تحت القاعدة دي
                 )
                 .addFilterBefore(jwtAuthenticationFilter , UsernamePasswordAuthenticationFilter.class)

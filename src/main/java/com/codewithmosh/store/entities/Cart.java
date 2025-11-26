@@ -35,7 +35,6 @@ public class Cart {
                 .findFirst()
                 .orElse(null);
     }
-
     public CartItem addItem(Product product){
         var cartItem = this.getItem(product.getId());
         if(cartItem != null){
