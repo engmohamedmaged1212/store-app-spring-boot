@@ -2,7 +2,6 @@ package com.codewithmosh.store.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -59,8 +58,11 @@ public class Cart {
         cartItems.clear();
     }
     public BigDecimal calcTotalPrice(){
-       return cartItems.stream()
-               .map(CartItem :: calcTotalPrice)
-               .reduce(BigDecimal.valueOf(0) , BigDecimal:: add);
+        return cartItems.stream()
+                .map(CartItem :: calcTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal:: add);
+    }
+    public boolean isEmpty(){
+        return cartItems.isEmpty();
     }
 }

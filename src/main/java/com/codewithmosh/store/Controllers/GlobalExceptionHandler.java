@@ -68,6 +68,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("error" , "The password or email isn't correct" ));
     }
+
+    //CartEmptyException
+    @ExceptionHandler(CartEmptyException.class)
+    public ResponseEntity<Map<String , String>> handleCartEmptyException(CartEmptyException ex){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error" , ex.getMessage() ));
+    }
 }
 
 
