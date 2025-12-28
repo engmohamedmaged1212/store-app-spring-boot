@@ -1,5 +1,6 @@
 package com.codewithmosh.store.mapper;
 
+import com.codewithmosh.store.dtos.OrderItemProductDto;
 import com.codewithmosh.store.dtos.product.ProductDto;
 import com.codewithmosh.store.entities.Product;
 import org.mapstruct.Mapper;
@@ -14,4 +15,6 @@ public interface ProductMapper {
     Product toEntity(ProductDto productDto);
     @Mapping(source = "categoryId", target = "category.id")
     void update(ProductDto source , @MappingTarget Product target);
+
+    OrderItemProductDto toOrderItemProductDto(Product product);
 }
